@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mars
-  namespace: {{ .Values.mars.namespace }}
+  name: titan
+  namespace: {{ .Values.titan.namespace }}
 spec:
   selector:
-    app: mars
+    app: titan
   ports:
     - port: 8000
       targetPort: 8000

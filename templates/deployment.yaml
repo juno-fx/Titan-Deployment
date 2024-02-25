@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mars
-  namespace: {{ .Values.mars.namespace }}
+  name: titan
+  namespace: {{ .Values.titan.namespace }}
 spec:
   revisionHistoryLimit: 0
   selector:
     matchLabels:
-      app: mars
+      app: titan
 
   strategy:
     rollingUpdate:
@@ -18,45 +18,28 @@ spec:
   template:
     metadata:
       labels:
-        app: mars
+        app: titan
 
     spec:
-      {{- if .Values.mars.node_selector.enable }}
+      serviceAccountName: titan
+
+      {{- if .Values.titan.node_selector.enable }}
       nodeSelector:
-        {{- range $key, $value := .Values.mars.node_selector.labels }}
+        {{- range $key, $value := .Values.titan.node_selector.labels }}
         {{ $key }}: {{ $value }}
         {{- end }}
       {{- end }}
+
       containers:
-        - name: mars
-          image: {{ .Values.mars.image }}
-          imagePullPolicy: Always
-          startupProbe:
-            httpGet:
-              path: "/.health"
-              port: 8000
-            initialDelaySeconds: 15
-            periodSeconds: 5
-            failureThreshold: 2
+        - name: titan
+          image: {{ .Values.titan.image }}
+          env:
+            - name: ORION_OWNER
+              value: {{ .Values.titan.owner }}
           resources:
             requests:
               cpu: 100m
               memory: 200Mi
-          env:
-            - name: SHOW
-              value: {{ .Values.mars.show }}
           ports:
             - containerPort: 8000
               name: endpoint
-          volumeMounts:
-            {{- range .Values.mars.mounts }}
-            - mountPath: {{ .mount_path }}
-              name: {{ .name }}
-              subPath: {{ .sub_path }}
-            {{- end }}
-      volumes:
-        {{- range .Values.mars.mounts }}
-        - name: {{ .name }}
-          persistentVolumeClaim:
-            claimName: {{ .claim_name }}
-        {{- end }}

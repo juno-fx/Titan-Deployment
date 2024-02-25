@@ -1,5 +1,5 @@
 # vars
-PROJECT="mars-deployment"
+PROJECT="titan-deployment"
 
 # targets
 cluster:

@@ -1,25 +1,25 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: mars
-  namespace: {{ .Values.mars.namespace }}
+  name: titan
+  namespace: {{ .Values.titan.namespace }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: mars
-  minReplicas: {{ .Values.mars.autoscaling.min_replicas }}
-  maxReplicas: {{ .Values.mars.autoscaling.min_replicas }}
+    name: titan
+  minReplicas: {{ .Values.titan.autoscaling.min_replicas }}
+  maxReplicas: {{ .Values.titan.autoscaling.max_replicas }}
   behavior:
     scaleDown:
       stabilizationWindowSeconds: 30
     scaleUp:
-      stabilizationWindowSeconds: 30
+      stabilizationWindowSeconds: 10
   metrics:
     - type: ContainerResource
       containerResource:
         name: cpu
-        container: mars
+        container: titan
         target:
           type: Utilization
           averageUtilization: 50
