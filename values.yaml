@@ -1,0 +1,15 @@
+titan:
+  image:                            # Registry to pull the Mars server image from
+  namespace: production             # Namespace to deploy the Mars server to
+
+  show: blah                        # The show code used to grab the UID of the show user
+
+  node_selector:                    # Node selector to deploy the Mars server to
+    enable: true                    # Enable node selector
+    labels:                         # Node selector to deploy the Mars server to
+      kubernetes.io/arch: amd64
+
+
+  autoscaling:
+    min_replicas: 1                 # Minimum number of replicas to run
+    max_replicas: 4                 # Maximum number of replicas to run
