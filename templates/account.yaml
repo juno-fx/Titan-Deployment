@@ -2,4 +2,4 @@ kind: ServiceAccount
 apiVersion: v1
 metadata:
   name: titan
-  namespace: {{ .Values.titan.namespace }}
+  namespace: {{ .Values.namespace }}
